@@ -14,4 +14,4 @@ COPY src ./src
 
 EXPOSE 4000
 
-CMD ["node", "src/server.js"]
+CMD ["sh", "-c", "npx prisma db push && npm run seed && node src/server.js"]
