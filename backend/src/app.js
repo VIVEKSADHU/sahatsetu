@@ -13,9 +13,22 @@ import patientRoutes from './routes/patientRoutes.js';
 export function createApp() {
   const app = express();
 
+  const allowedOrigins = [
+    config.frontendUrl,
+    'http://localhost:5173',
+    'https://frontend-eight-omega-biaharw8xj.vercel.app',
+    'https://frontend-viveksadhus-projects.vercel.app',
+  ];
+
   app.use(
     cors({
-      origin: config.frontendUrl,
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       credentials: true,
     }),
   );
